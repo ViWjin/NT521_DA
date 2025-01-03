@@ -1,0 +1,10 @@
+# environment variables:
+AFL_CRASH_EXITCODE=100
+AFL_I_DONT_CARE_ABOUT_MISSING_CRASHES=1
+AFL_KILL_SIGNAL=9
+AFL_SKIP_BIN_CHECK=1
+AFL_PL_SOCKET_PORT=9999
+AFL_TRACE_DU_SHUTDOWN=1
+AFL_PL_HAVOC_NUM=512
+# command line:
+'afl-fuzz' '-P' '2' '-i' 'in/' '-o' 'out' '-x' '../numbers.dict' '-m' 'none' '-d' '-t' '2000+' '--' 'python' '../cuckoo.py' '@@'

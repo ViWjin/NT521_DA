@@ -1,0 +1,363 @@
+899:M 28 Dec 2024 14:38:14.452 * DB saved on disk
+
+
+=== REDIS BUG REPORT START: Cut & paste starting from here ===
+899:M 28 Dec 2024 14:38:14.453 # Redis 7.4.1 crashed by signal: 11, si_code: 128
+899:M 28 Dec 2024 14:38:14.453 # Accessing address: (nil)
+899:M 28 Dec 2024 14:38:14.453 # Crashed running the instruction at: 0x4a772d
+
+------ STACK TRACE ------
+EIP:
+redis-server 127.0.0.1:6379(decrRefCount+0xd)[0x4a772d]
+
+899 redis-server *
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x12980)[0x7fd49e9fc980]
+redis-server 127.0.0.1:6379(decrRefCount+0xd)[0x4a772d]
+redis-server 127.0.0.1:6379(slowlogFreeEntry+0x4a)[0x5575aa]
+redis-server 127.0.0.1:6379(listDelNode+0x3b)[0x4480cb]
+redis-server 127.0.0.1:6379(slowlogPushEntryIfNeeded+0x10c)[0x55775c]
+redis-server 127.0.0.1:6379(updateStatsOnUnblock+0xf0)[0x582650]
+redis-server 127.0.0.1:6379(flushallSyncBgDone+0x57)[0x4b0b57]
+redis-server 127.0.0.1:6379(bioPipeReadJobCompList+0x115)[0x55fb75]
+redis-server 127.0.0.1:6379(aeProcessEvents+0x32b)[0x44f83b]
+redis-server 127.0.0.1:6379(aeMain+0x2d)[0x45023d]
+redis-server 127.0.0.1:6379(main+0x13ef)[0x47cd3f]
+/lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0xe7)[0x7fd49e61ac87]
+redis-server 127.0.0.1:6379(_start+0x2a)[0x4477aa]
+
+900 bio_close_file
+/lib/x86_64-linux-gnu/libpthread.so.0(pthread_cond_wait+0x243)[0x7fd49e9f7ad3]
+redis-server 127.0.0.1:6379(bioProcessBackgroundJobs+0x166)[0x55fd66]
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x76db)[0x7fd49e9f16db]
+/lib/x86_64-linux-gnu/libc.so.6(clone+0x3f)[0x7fd49e71a61f]
+
+901 bio_aof
+/lib/x86_64-linux-gnu/libpthread.so.0(pthread_cond_wait+0x243)[0x7fd49e9f7ad3]
+redis-server 127.0.0.1:6379(bioProcessBackgroundJobs+0x166)[0x55fd66]
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x76db)[0x7fd49e9f16db]
+/lib/x86_64-linux-gnu/libc.so.6(clone+0x3f)[0x7fd49e71a61f]
+
+902 bio_lazy_free
+/lib/x86_64-linux-gnu/libpthread.so.0(pthread_cond_wait+0x243)[0x7fd49e9f7ad3]
+redis-server 127.0.0.1:6379(bioProcessBackgroundJobs+0x166)[0x55fd66]
+/lib/x86_64-linux-gnu/libpthread.so.0(+0x76db)[0x7fd49e9f16db]
+/lib/x86_64-linux-gnu/libc.so.6(clone+0x3f)[0x7fd49e71a61f]
+
+4/4 expected stacktraces.
+
+------ STACK TRACE DONE ------
+
+------ REGISTERS ------
+899:M 28 Dec 2024 14:38:14.455 # 
+RAX:0000000000004c66 RBX:0000000000000001
+RCX:00007fd49fbc3000 RDX:0000000000000002
+RDI:4141414141414141 RSI:0000000000000000
+RBP:00007fff3e8f1d30 RSP:00007fff3e8f1d10
+R8 :0000000000e4d4b0 R9 :0000000000e4d4b0
+R10:0000000000000000 R11:00007fd49e7b5da0
+R12:0000000000000001 R13:000000000000504e
+R14:4141414141414141 R15:00007fd49e0594f0
+RIP:00000000004a772d EFL:0000000000010202
+CSGSFS:002b000000000033
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1f) -> 000000000055775c
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1e) -> 00007fff3e8f1dc0
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1d) -> 0000000000000081
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1c) -> 00007fd49e026110
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1b) -> 00000000004480cb
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d1a) -> 00007fff3e8f1d80
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d19) -> 0000000000000080
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d18) -> 00007fd49e060ea8
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d17) -> 00007fd49e19da80
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d16) -> 0000000000557560
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d15) -> 00000000005575aa
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d14) -> 00007fff3e8f1d60
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d13) -> 00007fd49e0594f0
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d12) -> 00007fd49e00a840
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d11) -> 0000000000000001
+899:M 28 Dec 2024 14:38:14.455 # (00007fff3e8f1d10) -> 0000000000004c66
+
+------ INFO OUTPUT ------
+# Server
+redis_version:7.4.1
+redis_git_sha1:865a32f5
+redis_git_dirty:0
+redis_build_id:f1f3d679b36827cb
+redis_mode:standalone
+os:Linux 5.4.0-150-generic x86_64
+arch_bits:64
+monotonic_clock:POSIX clock_gettime
+multiplexing_api:epoll
+atomicvar_api:c11-builtin
+gcc_version:4.2.1
+process_id:899
+process_supervised:no
+run_id:da32d92ea122cac9a7029e7076da1d52bf34e2a6
+tcp_port:6379
+server_time_usec:1735396694453023
+uptime_in_seconds:137
+uptime_in_days:0
+hz:10
+configured_hz:10
+lru_clock:7343446
+executable:/root/PolyFuzz/benchmarks/script/multi-benches/RedisBloom/drivers/cuckoo/fuzz/redis-server
+config_file:/root/PolyFuzz/benchmarks/script/multi-benches/RedisBloom/drivers/cuckoo/redis-stable/redis.conf
+io_threads_active:0
+listener0:name=tcp,bind=127.0.0.1,port=6379
+
+# Clients
+connected_clients:1
+cluster_connections:0
+maxclients:10000
+client_recent_max_input_buffer:20496
+client_recent_max_output_buffer:0
+blocked_clients:1
+tracking_clients:0
+pubsub_clients:0
+watching_clients:0
+clients_in_timeout_table:0
+total_watched_keys:0
+total_blocking_keys:0
+total_blocking_keys_on_nokey:0
+
+# Memory
+used_memory:1133504
+used_memory_human:1.08M
+used_memory_rss:8269824
+used_memory_rss_human:7.89M
+used_memory_peak:1133504
+used_memory_peak_human:1.08M
+used_memory_peak_perc:100.15%
+used_memory_overhead:1001656
+used_memory_startup:1001464
+used_memory_dataset:131848
+used_memory_dataset_perc:99.85%
+allocator_allocated:1716464
+allocator_active:2076672
+allocator_resident:4653056
+allocator_muzzy:0
+total_system_memory:4121309184
+total_system_memory_human:3.84G
+used_memory_lua:31744
+used_memory_vm_eval:31744
+used_memory_lua_human:31.00K
+used_memory_scripts_eval:0
+number_of_cached_scripts:0
+number_of_functions:0
+number_of_libraries:0
+used_memory_vm_functions:32768
+used_memory_vm_total:64512
+used_memory_vm_total_human:63.00K
+used_memory_functions:192
+used_memory_scripts:192
+used_memory_scripts_human:192B
+maxmemory:0
+maxmemory_human:0B
+maxmemory_policy:noeviction
+allocator_frag_ratio:1.23
+allocator_frag_bytes:284176
+allocator_rss_ratio:2.24
+allocator_rss_bytes:2576384
+rss_overhead_ratio:1.78
+rss_overhead_bytes:3616768
+mem_fragmentation_ratio:7.56
+mem_fragmentation_bytes:7176464
+mem_not_counted_for_evict:0
+mem_replication_backlog:0
+mem_total_replication_buffers:0
+mem_clients_slaves:0
+mem_clients_normal:0
+mem_cluster_links:0
+mem_aof_buffer:0
+mem_allocator:jemalloc-5.3.0
+mem_overhead_db_hashtable_rehashing:0
+active_defrag_running:0
+lazyfree_pending_objects:0
+lazyfreed_objects:125
+
+# Persistence
+loading:0
+async_loading:0
+current_cow_peak:0
+current_cow_size:0
+current_cow_size_age:0
+current_fork_perc:0.00
+current_save_keys_processed:0
+current_save_keys_total:0
+rdb_changes_since_last_save:0
+rdb_bgsave_in_progress:0
+rdb_last_save_time:1735396694
+rdb_last_bgsave_status:ok
+rdb_last_bgsave_time_sec:-1
+rdb_current_bgsave_time_sec:-1
+rdb_saves:0
+rdb_last_cow_size:0
+rdb_last_load_keys_expired:0
+rdb_last_load_keys_loaded:1
+aof_enabled:0
+aof_rewrite_in_progress:0
+aof_rewrite_scheduled:0
+aof_last_rewrite_time_sec:-1
+aof_current_rewrite_time_sec:-1
+aof_last_bgrewrite_status:ok
+aof_rewrites:0
+aof_rewrites_consecutive_failures:0
+aof_last_write_status:ok
+aof_last_cow_size:0
+module_fork_in_progress:0
+module_fork_last_cow_size:0
+
+# Stats
+total_connections_received:379
+total_commands_processed:379
+instantaneous_ops_per_sec:5
+total_net_input_bytes:24284
+total_net_output_bytes:1946
+total_net_repl_input_bytes:0
+total_net_repl_output_bytes:0
+instantaneous_input_kbps:0.36
+instantaneous_output_kbps:0.03
+instantaneous_input_repl_kbps:0.00
+instantaneous_output_repl_kbps:0.00
+rejected_connections:0
+sync_full:0
+sync_partial_ok:0
+sync_partial_err:0
+expired_subkeys:0
+expired_keys:0
+expired_stale_perc:0.00
+expired_time_cap_reached_count:0
+expire_cycle_cpu_milliseconds:2
+evicted_keys:0
+evicted_clients:0
+evicted_scripts:0
+total_eviction_exceeded_time:0
+current_eviction_exceeded_time:0
+keyspace_hits:0
+keyspace_misses:0
+pubsub_channels:0
+pubsub_patterns:0
+pubsubshard_channels:0
+latest_fork_usec:0
+total_forks:0
+migrate_cached_sockets:0
+slave_expires_tracked_keys:0
+active_defrag_hits:0
+active_defrag_misses:0
+active_defrag_key_hits:0
+active_defrag_key_misses:0
+total_active_defrag_time:0
+current_active_defrag_time:0
+tracking_total_keys:0
+tracking_total_items:0
+tracking_total_prefixes:0
+unexpected_error_replies:0
+total_error_replies:4
+dump_payload_sanitizations:0
+total_reads_processed:757
+total_writes_processed:378
+io_threaded_reads_processed:0
+io_threaded_writes_processed:0
+client_query_buffer_limit_disconnections:0
+client_output_buffer_limit_disconnections:0
+reply_buffer_shrinks:0
+reply_buffer_expands:0
+eventloop_cycles:1931
+eventloop_duration_sum:2770765
+eventloop_duration_cmd_sum:2211158
+instantaneous_eventloop_cycles_per_sec:25
+instantaneous_eventloop_duration_usec:903
+acl_access_denied_auth:0
+acl_access_denied_cmd:0
+acl_access_denied_key:0
+acl_access_denied_channel:0
+
+# Replication
+role:master
+connected_slaves:0
+master_failover_state:no-failover
+master_replid:2889a35e2b6ccd976672f59d8538601a95f08517
+master_replid2:0000000000000000000000000000000000000000
+master_repl_offset:0
+second_repl_offset:-1
+repl_backlog_active:0
+repl_backlog_size:1048576
+repl_backlog_first_byte_offset:0
+repl_backlog_histlen:0
+
+# CPU
+used_cpu_sys:0.137084
+used_cpu_user:0.643883
+used_cpu_sys_children:0.000000
+used_cpu_user_children:0.000000
+used_cpu_sys_main_thread:0.124715
+used_cpu_user_main_thread:0.611104
+
+# Modules
+module:name=bf,ver=20608,api=1,filters=0,usedby=[],using=[],options=[]
+
+# Commandstats
+cmdstat_cf.loadchunk:calls=124,usec=2910,usec_per_call=23.47,rejected_calls=0,failed_calls=4
+cmdstat_flushall:calls=131,usec=2225110,usec_per_call=16985.57,rejected_calls=0,failed_calls=0
+cmdstat_cf.reserve:calls=124,usec=3948,usec_per_call=31.84,rejected_calls=0,failed_calls=0
+
+# Errorstats
+errorstat_Invalid:count=4702111234474983745
+
+# Latencystats
+latency_percentiles_usec_cf.loadchunk:p50=12.031,p99=165.887,p99.9=195.583
+latency_percentiles_usec_flushall:p50=18612.223,p99=21889.023,p99.9=22020.095
+latency_percentiles_usec_cf.reserve:p50=24.063,p99=125.439,p99.9=241.663
+
+# Cluster
+cluster_enabled:0
+
+# Keyspace
+
+------ CLIENT LIST OUTPUT ------
+id=382 addr=127.0.0.1:35440 laddr=127.0.0.1:6379 fd=11 name= age=0 idle=0 flags=b db=0 sub=0 psub=0 ssub=0 multi=-1 watch=0 qbuf=0 qbuf-free=20474 argv-mem=8 multi-mem=0 rbs=16384 rbp=16384 obl=0 oll=0 omem=0 tot-mem=37776 events=r cmd=flushall user=default redir=-1 resp=2 lib-name= lib-ver=
+
+------ CURRENT CLIENT INFO ------
+id=382 addr=127.0.0.1:35440 laddr=127.0.0.1:6379 fd=11 name= age=0 idle=0 flags=b db=0 sub=0 psub=0 ssub=0 multi=-1 watch=0 qbuf=0 qbuf-free=20474 argv-mem=8 multi-mem=0 rbs=16384 rbp=16384 obl=0 oll=0 omem=0 tot-mem=37776 events=r cmd=flushall user=default redir=-1 resp=2 lib-name= lib-ver=
+argc: '1'
+argv[0]: '"FLUSHALL"'
+
+------ MODULES INFO OUTPUT ------
+
+------ CONFIG DEBUG OUTPUT ------
+replica-read-only yes
+lazyfree-lazy-user-flush no
+repl-diskless-sync yes
+lazyfree-lazy-server-del no
+activedefrag no
+proto-max-bulk-len 512mb
+lazyfree-lazy-user-del no
+io-threads 1
+sanitize-dump-payload no
+lazyfree-lazy-eviction no
+repl-diskless-load disabled
+io-threads-do-reads no
+lazyfree-lazy-expire no
+client-query-buffer-limit 1gb
+slave-read-only yes
+list-compress-depth 0
+
+------ FAST MEMORY TEST ------
+899:M 28 Dec 2024 14:38:14.456 # Bio worker thread #0 terminated
+899:M 28 Dec 2024 14:38:14.456 # Bio worker thread #1 terminated
+899:M 28 Dec 2024 14:38:14.456 # Bio worker thread #2 terminated
+*** Preparing to test memory region a24000 (4370432 bytes)
+*** Preparing to test memory region 190e000 (135168 bytes)
+*** Preparing to test memory region 7fd494000000 (135168 bytes)
+*** Preparing to test memory region 7fd49adcd000 (8388608 bytes)
+*** Preparing to test memory region 7fd49b5ce000 (8388608 bytes)
+*** Preparing to test memory region 7fd49bdcf000 (8388608 bytes)
+*** Preparing to test memory region 7fd49c5d0000 (8388608 bytes)
+*** Preparing to test memory region 7fd49cdd1000 (8388608 bytes)
+*** Preparing to test memory region 7fd49d7ff000 (4096 bytes)
+*** Preparing to test memory region 7fd49d800000 (12582912 bytes)
+*** Preparing to test memory region 7fd49e9e6000 (16384 bytes)
+*** Preparing to test memory region 7fd49ec05000 (16384 bytes)
+*** Preparing to test memory region 7fd49f015000 (2097152 bytes)
+*** Preparing to test memory region 7fd49fbd3000 (28672 bytes)
+*** Preparing to test memory region 7fd49fbea000 (4096 bytes)
+.
